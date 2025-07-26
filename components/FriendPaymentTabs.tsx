@@ -2,9 +2,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { FriendPaymentList } from './FriendPaymentList';
 
-export function FriendPaymentTabs() {
+export function FriendPaymentTabs({ onDeleteRefresh }: { onDeleteRefresh?: () => void }) {
   const [activeTab, setActiveTab] = useState<'my-payments' | 'other-payments'>('my-payments');
 
+  // Pass onDeleteRefresh to FriendPaymentList
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
@@ -26,7 +27,7 @@ export function FriendPaymentTabs() {
         </TouchableOpacity>
       </View>
 
-      <FriendPaymentList type={activeTab} />
+      <FriendPaymentList type={activeTab} onDeleteRefresh={onDeleteRefresh} />
     </View>
   );
 }

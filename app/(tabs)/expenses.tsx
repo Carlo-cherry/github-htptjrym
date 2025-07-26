@@ -8,6 +8,12 @@ import { ExpenseList } from '@/components/ExpenseList';
 
 export default function Expenses() {
   const [showForm, setShowForm] = useState(false);
+  const [expenseListKey, setExpenseListKey] = useState(0);
+
+  // Custom handler to force refresh ExpenseList after delete
+  const handleExpenseDeleteRefresh = () => {
+    setExpenseListKey(prev => prev + 1);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,7 +37,8 @@ export default function Expenses() {
               <ExpenseForm onClose={() => setShowForm(false)} />
             </View>
           )}
-          <ExpenseList />
+          {/* Pass a key and a callback to ExpenseList for delete refresh */}
+          <ExpenseList key={expenseListKey} onDeleteRefresh={handleExpenseDeleteRefresh} />
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>

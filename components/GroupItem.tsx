@@ -17,6 +17,7 @@ interface Group {
   myShare: string;
   description: string;
   date: string;
+  category: string;
   members: GroupMember[];
   splitType: 'equal' | 'custom';
   paymentMode?: string;
@@ -35,7 +36,7 @@ export function GroupItem({ group, onEdit, onDelete, onSettleMember, onDeleteMem
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDeleteGroup = () => {
-    if (onDelete) {
+    if (typeof onDelete === 'function') {
       Alert.alert(
         'Delete Group Expense',
         'Are you sure you want to delete this entire group expense?',
@@ -108,6 +109,7 @@ export function GroupItem({ group, onEdit, onDelete, onSettleMember, onDeleteMem
             <TouchableOpacity 
               onPress={handleDeleteGroup} 
               style={styles.actionButton}
+              disabled={typeof onDelete !== 'function'}
             >
               <Trash2 size={16} color="#EF4444" />
             </TouchableOpacity>
@@ -118,7 +120,14 @@ export function GroupItem({ group, onEdit, onDelete, onSettleMember, onDeleteMem
           <View style={styles.dateContainer}>
             <Calendar size={16} color="#9CA3AF" />
             <Text style={styles.date}>{group.date}</Text>
-          </View>
+          </View> 
+          {/* Category display */}
+          {group.category && (
+            <View style={styles.categoryContainer}>
+              
+              <Text style={styles.category}>{group.category}</Text>
+            </View>
+          )}
           {group.paymentMode && (
             <View style={styles.paymentModeContainer}>
               <Text style={styles.paymentMode}>Payment: {group.paymentMode}</Text>
@@ -193,6 +202,22 @@ export function GroupItem({ group, onEdit, onDelete, onSettleMember, onDeleteMem
 }
 
 const styles = StyleSheet.create({
+  categoryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 16,
+    gap: 4,
+  },
+  categoryLabel: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    marginRight: 4,
+  },
+  category: {
+    fontSize: 12,
+    color: '#3B82F6',
+    fontWeight: '500',
+  },
   item: {
     borderRadius: 16,
     padding: 20,
@@ -334,6 +359,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   settleButton: {
+    padding: 4,
+  },
+  deleteButton: {
     padding: 4,
   },
 });

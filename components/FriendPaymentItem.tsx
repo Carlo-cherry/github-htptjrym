@@ -42,14 +42,16 @@ export function FriendPaymentItem({ payment, type, onEdit, onDelete, onToggleSet
   const isOwed = type === 'my-payments';
 
   const handleDelete = () => {
-    Alert.alert(
-      'Delete Payment',
-      'Are you sure you want to delete this payment?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', style: 'destructive', onPress: () => onDelete?.(payment.id) }
-      ]
-    );
+    if (typeof onDelete === 'function') {
+      Alert.alert(
+        'Delete Payment',
+        'Are you sure you want to delete this payment?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Delete', style: 'destructive', onPress: () => onDelete(payment.id) }
+        ]
+      );
+    }
   };
 
   const handleEdit = () => {
@@ -200,6 +202,7 @@ export function FriendPaymentItem({ payment, type, onEdit, onDelete, onToggleSet
                 <TouchableOpacity 
                   onPress={handleDelete} 
                   style={styles.actionButton}
+                  disabled={typeof onDelete !== 'function'}
                 >
                   <Trash2 size={16} color="#EF4444" />
                 </TouchableOpacity>

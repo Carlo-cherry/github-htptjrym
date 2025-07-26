@@ -8,6 +8,12 @@ import { FriendPaymentForm } from '@/components/FriendPaymentForm';
 
 export default function Friends() {
   const [showForm, setShowForm] = useState(false);
+  const [friendTabsKey, setFriendTabsKey] = useState(0);
+
+  // Custom handler to force refresh FriendPaymentTabs after delete
+  const handleFriendDeleteRefresh = () => {
+    setFriendTabsKey(prev => prev + 1);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,7 +37,8 @@ export default function Friends() {
               <FriendPaymentForm onClose={() => setShowForm(false)} />
             </View>
           )}
-          <FriendPaymentTabs />
+          {/* Pass a key and a callback to FriendPaymentTabs for delete refresh */}
+          <FriendPaymentTabs key={friendTabsKey} onDeleteRefresh={handleFriendDeleteRefresh} />
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>

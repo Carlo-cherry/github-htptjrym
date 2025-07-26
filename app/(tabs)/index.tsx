@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { DashboardCard } from '@/components/DashboardCard';
 import { RecentTransactions } from '@/components/RecentTransactions';
 import { ExpenseSummary } from '@/components/ExpenseSummary';
+// Insights import removed
 
 export default function Dashboard() {
   return (
@@ -48,6 +49,7 @@ export default function Dashboard() {
           </View>
 
           <RecentTransactions />
+          {/* Insights tab removed */}
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>

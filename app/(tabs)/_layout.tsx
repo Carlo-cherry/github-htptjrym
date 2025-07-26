@@ -57,6 +57,7 @@ export default function TabLayout() {
           ),
         }}
       />
+      // Insights tab removed
       <Tabs.Screen
         name="settings"
         options={{

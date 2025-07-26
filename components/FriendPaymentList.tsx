@@ -27,7 +27,7 @@ const initialOtherPayments: FriendPayment[] = [
   { id: '4', friend: 'Emma Wilson', amount: '₹600', description: 'Travel expenses', date: '2024-12-28', category: 'Transportation', settled: true },
 ];
 
-export function FriendPaymentList({ type }: FriendPaymentListProps) {
+export function FriendPaymentList({ type, onDeleteRefresh }: { type: 'my-payments' | 'other-payments', onDeleteRefresh?: () => void }) {
   const [myPayments, setMyPayments] = useState<FriendPayment[]>(initialMyPayments);
   const [otherPayments, setOtherPayments] = useState<FriendPayment[]>(initialOtherPayments);
   
@@ -56,6 +56,7 @@ export function FriendPaymentList({ type }: FriendPaymentListProps) {
     } else {
       setOtherPayments(otherPayments.filter(payment => payment.id !== paymentId));
     }
+    if (onDeleteRefresh) onDeleteRefresh();
   };
 
   const handleToggleSettle = (paymentId: string) => {

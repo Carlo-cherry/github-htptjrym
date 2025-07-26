@@ -8,6 +8,12 @@ import { GroupList } from '@/components/GroupList';
 
 export default function Groups() {
   const [showForm, setShowForm] = useState(false);
+  const [groupListKey, setGroupListKey] = useState(0);
+
+  // Custom handler to force refresh GroupList after delete
+  const handleGroupDeleteRefresh = () => {
+    setGroupListKey(prev => prev + 1);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,7 +37,8 @@ export default function Groups() {
               <GroupPaymentForm onClose={() => setShowForm(false)} />
             </View>
           )}
-          <GroupList />
+          {/* Pass a key and a callback to GroupList for delete refresh */}
+          <GroupList key={groupListKey} onDeleteRefresh={handleGroupDeleteRefresh} />
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>

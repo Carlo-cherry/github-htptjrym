@@ -48,14 +48,16 @@ export function TransactionItem({ transaction, onEdit, onDelete, showActions = t
   };
 
   const handleDelete = () => {
-    Alert.alert(
-      'Delete Transaction',
-      'Are you sure you want to delete this transaction?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', style: 'destructive', onPress: () => onDelete?.(transaction.id) }
-      ]
-    );
+    if (typeof onDelete === 'function') {
+      Alert.alert(
+        'Delete Transaction',
+        'Are you sure you want to delete this transaction?',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Delete', style: 'destructive', onPress: () => onDelete(transaction.id) }
+        ]
+      );
+    }
   };
 
   const handleEdit = () => {
@@ -179,7 +181,7 @@ export function TransactionItem({ transaction, onEdit, onDelete, showActions = t
         </View>
 
         <View style={styles.right}>
-          {!isEditing && showActions && (
+          {!isEditing && (
             <>
               <Text style={styles.amount}>{transaction.amount}</Text>
               <Text style={styles.date}>{transaction.date}</Text>
@@ -193,16 +195,11 @@ export function TransactionItem({ transaction, onEdit, onDelete, showActions = t
                 <TouchableOpacity 
                   onPress={handleDelete} 
                   style={styles.actionButton}
+                  disabled={typeof onDelete !== 'function'}
                 >
                   <Trash2 size={16} color="#EF4444" />
                 </TouchableOpacity>
               </View>
-            </>
-          )}
-          {!isEditing && !showActions && (
-            <>
-              <Text style={styles.amount}>{transaction.amount}</Text>
-              <Text style={styles.date}>{transaction.date}</Text>
             </>
           )}
         </View>

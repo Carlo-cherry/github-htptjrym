@@ -19,6 +19,7 @@ interface Group {
   myShare: string;
   description: string;
   date: string;
+  category: string;
   members: GroupMember[];
   splitType: 'equal' | 'custom';
 }
@@ -31,7 +32,7 @@ interface GroupEditFormProps {
 
 export function GroupEditForm({ group, onSave, onCancel }: GroupEditFormProps) {
   const [amount, setAmount] = useState(group.totalAmount.replace('₹', '').replace(',', ''));
-  const [category, setCategory] = useState('Food'); // Default category
+  const [category, setCategory] = useState(group.category || 'Food'); // Use group.category if available
   const [paymentMode, setPaymentMode] = useState('UPI'); // Default payment mode
   const [date, setDate] = useState(group.date);
   const [description, setDescription] = useState(group.description);
@@ -62,6 +63,7 @@ export function GroupEditForm({ group, onSave, onCancel }: GroupEditFormProps) {
       myShare: `₹${updatedMembers.find(m => m.name === 'Me')?.amount.toLocaleString() || '0'}`,
       description,
       date,
+      category,
       members: updatedMembers,
       splitType
     };

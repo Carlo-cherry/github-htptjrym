@@ -18,6 +18,7 @@ interface Group {
   myShare: string;
   description: string;
   date: string;
+  category: string;
   members: GroupMember[];
   splitType: 'equal' | 'custom';
   paymentMode?: string;
@@ -30,6 +31,7 @@ const initialGroups: Group[] = [
     myShare: '₹600', 
     description: 'Team lunch', 
     date: '2025-01-01',
+    category: 'Food',
     paymentMode: 'UPI',
     members: [
       { id: '1', name: 'John', amount: 600, settled: false },
@@ -45,6 +47,7 @@ const initialGroups: Group[] = [
     myShare: '₹450', 
     description: 'Movie night', 
     date: '2024-12-30',
+    category: 'Entertainment',
     paymentMode: 'Credit Card',
     members: [
       { id: '5', name: 'Emma', amount: 450, settled: true },
@@ -60,6 +63,7 @@ const initialGroups: Group[] = [
     myShare: '₹3,000', 
     description: 'Weekend trip expenses', 
     date: '2024-12-28',
+    category: 'Transportation',
     paymentMode: 'Cash',
     members: [
       { id: '9', name: 'Alex', amount: 3000, settled: false },
@@ -71,7 +75,7 @@ const initialGroups: Group[] = [
   },
 ];
 
-export function GroupList() {
+export function GroupList({ onDeleteRefresh }: { onDeleteRefresh?: () => void }) {
   const [groups, setGroups] = useState<Group[]>(initialGroups);
 
   const handleEditGroup = (updatedGroup: Group) => {
@@ -82,6 +86,7 @@ export function GroupList() {
 
   const handleDeleteGroup = (groupId: string) => {
     setGroups(groups.filter(group => group.id !== groupId));
+    if (onDeleteRefresh) onDeleteRefresh();
   };
 
   const handleSettleMember = (groupId: string, memberId: string) => {
@@ -102,7 +107,6 @@ export function GroupList() {
     setGroups(groups.map(group => {
       if (group.id === groupId) {
         const updatedMembers = group.members.filter(member => member.id !== memberId);
-        
         // Recalculate amounts if equal split
         if (group.splitType === 'equal' && updatedMembers.length > 0) {
           const totalAmount = parseFloat(group.totalAmount.replace('₹', '').replace(',', ''));
@@ -111,14 +115,12 @@ export function GroupList() {
             ...member,
             amount: equalShare
           }));
-          
           return {
             ...group,
             members: recalculatedMembers,
             myShare: `₹${recalculatedMembers.find(m => m.name === 'Me')?.amount.toLocaleString() || '0'}`
           };
         }
-        
         return {
           ...group,
           members: updatedMembers

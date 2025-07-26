@@ -20,7 +20,7 @@ const initialExpenses: Transaction[] = [
   { id: '5', description: 'Coffee', amount: '₹120', category: 'Food', date: '2024-12-28', type: 'expense' as const, paymentMode: 'Cash' },
 ];
 
-export function ExpenseList() {
+export function ExpenseList({ onDeleteRefresh }: { onDeleteRefresh?: () => void }) {
   const [expenses, setExpenses] = useState<Transaction[]>(initialExpenses);
 
   const handleEditExpense = (updatedTransaction: Transaction) => {
@@ -31,21 +31,23 @@ export function ExpenseList() {
 
   const handleDeleteExpense = (transactionId: string) => {
     setExpenses(expenses.filter(expense => expense.id !== transactionId));
+    if (onDeleteRefresh) onDeleteRefresh();
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Recent Expenses</Text>
-      <View style={styles.expensesList}>
+      <ScrollView style={styles.expensesList} showsVerticalScrollIndicator={false}>
         {expenses.map((expense) => (
           <TransactionItem 
             key={expense.id} 
             transaction={expense}
             onEdit={handleEditExpense}
             onDelete={handleDeleteExpense}
+            showActions={true}
           />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }
