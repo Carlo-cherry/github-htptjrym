@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { ChartBar as BarChart3, CreditCard, Users, Users as Users2, Settings } from 'lucide-react-native';
+import { ChartBar as BarChart3, CreditCard, Users, Users as Users2, Settings, TrendingUp } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
@@ -57,7 +57,15 @@ export default function TabLayout() {
           ),
         }}
       />
-      // Insights tab removed
+      <Tabs.Screen
+        name="insights"
+        options={{
+          title: 'Insights',
+          tabBarIcon: ({ size, color }) => (
+            <TrendingUp size={size} color={color} />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="settings"
         options={{
